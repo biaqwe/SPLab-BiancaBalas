@@ -11,14 +11,16 @@ public class Chapter {
         this.name = name;
     }
 
-    public void addSubChapter(SubChapter sub) {
+    public SubChapter createSubChapter(String name) {
+        SubChapter sub = new SubChapter(name);
         subChapters.add(sub);
+        return sub;
     }
 
     public void print() {
         System.out.println(name);
-        for (SubChapter sub : subChapters) {
-            sub.print();
+        for (SubChapter s : subChapters) {
+            s.print();
         }
     }
 }

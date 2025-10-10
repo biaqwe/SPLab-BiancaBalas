@@ -1,12 +1,13 @@
 package com.example.demo.bookmodel;
 
-public class Table {
+public class Table extends Element {
     private String title;
 
     public Table(String title) {
         this.title = title;
     }
 
+    @Override
     public void print() {
         System.out.println("Table: " + title);
     }

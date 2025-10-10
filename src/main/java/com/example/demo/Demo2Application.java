@@ -14,15 +14,13 @@ public class Demo2Application {
         Author rpGheo = new Author("Radu Pavel Gheo");
         noapteBuna.addAuthor(rpGheo);
 
-        Chapter cap1 = new Chapter("Capitolul 1");
-        noapteBuna.addChapter(cap1);
+        int indexChapter1 = noapteBuna.createChapter("Capitolul 1");
+        Chapter ch1 = noapteBuna.getChapter(indexChapter1);
 
-        SubChapter sub1 = new SubChapter("Subcapitol 1.1");
-        cap1.addSubChapter(sub1);
-
-        sub1.addParagraph(new Paragraph("Multumesc celor care ..."));
-        sub1.addImage(new Image("Imagine 1"));
-        sub1.addTable(new Table("Tabel 1"));
+        SubChapter sch1 = ch1.createSubChapter("Subcapitolul 1.1");
+        sch1.addElement(new Paragraph("Multumesc celor care ..."));
+        sch1.addElement(new Image("Coperta"));
+        sch1.addElement(new Table("Tabelul 1"));
 
         noapteBuna.setTableOfContents(new TableOfContents());
 

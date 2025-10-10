@@ -17,8 +17,14 @@ public class Book {
         authors.add(author);
     }
 
-    public void addChapter(Chapter chapter) {
+    public int createChapter(String name) {
+        Chapter chapter = new Chapter(name);
         chapters.add(chapter);
+        return chapters.indexOf(chapter);
+    }
+
+    public Chapter getChapter(int index) {
+        return chapters.get(index);
     }
 
     public void setTableOfContents(TableOfContents toc) {
