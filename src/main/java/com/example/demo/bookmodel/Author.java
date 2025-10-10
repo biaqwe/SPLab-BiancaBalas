@@ -1,15 +1,13 @@
 package com.example.demo.bookmodel;
 
 public class Author {
-    private final String name;
-    private final String surname;
+    private String name;
 
-    public Author(String name, String surname) {
+    public Author(String name) {
         this.name = name;
-        this.surname = surname;
     }
 
     public void print() {
-        System.out.println("Author: " + name + " " + surname);
+        System.out.println("Author: " + name);
     }
 }

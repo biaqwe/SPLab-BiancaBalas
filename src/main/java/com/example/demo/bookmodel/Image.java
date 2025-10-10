@@ -1,15 +1,13 @@
 package com.example.demo.bookmodel;
 
-public class Image implements Element {
-    private final String url;
+public class Image {
+    private String imageName;
 
-    public Image(String url) {
-        this.url = url;
+    public Image(String imageName) {
+        this.imageName = imageName;
     }
 
-    @Override
     public void print() {
-        System.out.println("Image with name: " + url);
+        System.out.println("Image with name:" + imageName);
     }
-
 }

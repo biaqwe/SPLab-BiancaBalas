@@ -1,14 +1,13 @@
 package com.example.demo.bookmodel;
 
-public class Table implements Element {
-    private final String caption;
+public class Table {
+    private String title;
 
-    public Table(String caption) {
-        this.caption = caption;
+    public Table(String title) {
+        this.title = title;
     }
 
-    @Override
     public void print() {
-        System.out.println(": " + caption);
+        System.out.println("Table: " + title);
     }
 }

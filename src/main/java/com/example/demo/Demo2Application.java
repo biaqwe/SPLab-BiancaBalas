@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import com.example.demo.bookmodel.*;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
@@ -12,27 +11,20 @@ public class Demo2Application {
         SpringApplication.run(Demo2Application.class, args);
 
         Book noapteBuna = new Book("Noapte buna, copii!");
-        Author rpGheo = new Author("Radu Pavel", "Gheo");
+        Author rpGheo = new Author("Radu Pavel Gheo");
         noapteBuna.addAuthor(rpGheo);
 
-        Section cap1 = new Section("Capitolul 1");
-        Section cap11 = new Section("Capitolul 1.1");
-        Section cap111 = new Section("Capitolul 1.1.1");
-        Section cap1111 = new Section("Subchapter 1.1.1.1");
+        Chapter cap1 = new Chapter("Capitolul 1");
+        noapteBuna.addChapter(cap1);
 
-        noapteBuna.add(new Paragraph("Multumesc celor care ..."));
-        noapteBuna.add(cap1);
+        SubChapter sub1 = new SubChapter("Subcapitol 1.1");
+        cap1.addSubChapter(sub1);
 
-        cap1.add(new Paragraph("Moto capitol"));
-        cap1.add(cap11);
+        sub1.addParagraph(new Paragraph("Multumesc celor care ..."));
+        sub1.addImage(new Image("Imagine 1"));
+        sub1.addTable(new Table("Tabel 1"));
 
-        cap11.add(new Paragraph("Text from subchapter 1.1"));
-        cap11.add(cap111);
-
-        cap111.add(new Paragraph("Text from subchapter 1.1.1"));
-        cap111.add(cap1111);
-
-        cap1111.add(new Image("Image subchapter 1.1.1.1"));
+        noapteBuna.setTableOfContents(new TableOfContents());
 
         noapteBuna.print();
     }
