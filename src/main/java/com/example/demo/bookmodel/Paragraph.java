@@ -1,6 +1,6 @@
 package com.example.demo.bookmodel;
 
-public class Paragraph extends Element {
+public class Paragraph implements Element {
     private String text;
 
     public Paragraph(String text) {

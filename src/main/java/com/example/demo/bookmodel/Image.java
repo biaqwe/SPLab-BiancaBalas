@@ -1,14 +1,14 @@
 package com.example.demo.bookmodel;
 
-public class Image extends Element {
-    private String imageName;
+public class Image implements Element {
+    private String url;
 
-    public Image(String imageName) {
-        this.imageName = imageName;
+    public Image(String url) {
+        this.url = url;
     }
 
     @Override
     public void print() {
-        System.out.println("Image with name:" + imageName);
+        System.out.println("Image with name:" + url);
     }
 }
