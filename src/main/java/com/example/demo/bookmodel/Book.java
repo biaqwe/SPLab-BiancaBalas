@@ -1,12 +1,25 @@
 package com.example.demo.bookmodel;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book implements Element {
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(force = true)
+public class Book extends BaseElement {
     private String title;
+
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Author> authors = new ArrayList<>();
-    private List<Element> children = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<BaseElement> children = new ArrayList<>();
 
     public Book(String title) {
         this.title = title;
@@ -18,7 +31,9 @@ public class Book implements Element {
 
     @Override
     public void add(Element e) {
-        children.add(e);
+        if (e instanceof BaseElement) {
+            children.add((BaseElement) e);
+        }
     }
 
     @Override
@@ -34,13 +49,11 @@ public class Book implements Element {
     @Override
     public void print() {
         System.out.println("Book: " + title);
-        System.out.println();
         System.out.println("Authors:");
         for (Author a : authors) {
             a.print();
         }
-        System.out.println();
-        for (Element e : children) {
+        for (BaseElement e : children) {
             e.print();
         }
     }

@@ -1,53 +1,55 @@
 package com.example.demo.controllers;
 
+import com.example.demo.bookmodel.Book;
+import com.example.demo.persistence.BooksRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
+@RequiredArgsConstructor
 public class BooksController {
 
-    private final Map<Integer, String> books = new HashMap<>();
-
-    public BooksController() {
-        books.put(1, "Noapte Buna, copii!");
-        books.put(2, "Radu Pavel Gheo");
-    }
+    private final BooksRepository booksRepository;
 
     @GetMapping
-    public Collection<String> getAllBooks() {
-        return books.values();
+    public List<Book> getAllBooks() {
+        return booksRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public String getBookById(@PathVariable int id) {
-        return books.getOrDefault(id, "Book not found");
+    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+        return booksRepository.findById(id)
+                .map(book -> ResponseEntity.ok(book))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public String createBook(@RequestBody String title) {
-        int newId = books.size() + 1;
-        books.put(newId, title);
-        return "Book created with ID: " + newId;
+    public Book createBook(@RequestBody Book book) {
+        // [cite: 75] Save the book to the database
+        return booksRepository.save(book);
     }
 
     @PutMapping("/{id}")
-    public String updateBook(@PathVariable int id, @RequestBody String title) {
-        if (books.containsKey(id)) {
-            books.put(id, title);
-            return "Book with ID " + id + " updated to: " + title;
-        } else {
-            return "Book not found";
-        }
+    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book updatedBookDetails) {
+        return booksRepository.findById(id)
+                .map(book -> {
+                    book.setTitle(updatedBookDetails.getTitle());
+                    return ResponseEntity.ok(booksRepository.save(book));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public String deleteBook(@PathVariable int id) {
-        if (books.remove(id) != null) {
-            return "Book with ID " + id + " deleted.";
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        if (booksRepository.existsById(id)) {
+            booksRepository.deleteById(id);
+            return ResponseEntity.ok("Book with ID " + id + " deleted.");
         } else {
-            return "Book not found";
+            return ResponseEntity.notFound().build();
         }
     }
 }

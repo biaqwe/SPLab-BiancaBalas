@@ -1,11 +1,22 @@
 package com.example.demo.bookmodel;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section implements Element {
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(force = true)
+public class Section extends BaseElement {
     private String title;
-    private List<Element> children = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<BaseElement> children = new ArrayList<>();
 
     public Section(String title) {
         this.title = title;
@@ -13,7 +24,9 @@ public class Section implements Element {
 
     @Override
     public void add(Element e) {
-        children.add(e);
+        if (e instanceof BaseElement) {
+            children.add((BaseElement) e);
+        }
     }
 
     @Override
@@ -28,8 +41,8 @@ public class Section implements Element {
 
     @Override
     public void print() {
-        System.out.println(title);
-        for (Element e : children) {
+        System.out.println("Section: " + title);
+        for (BaseElement e : children) {
             e.print();
         }
     }

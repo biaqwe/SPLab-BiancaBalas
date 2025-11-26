@@ -1,6 +1,15 @@
 package com.example.demo.bookmodel;
 
-public class Image implements Element {
+import jakarta.persistence.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(force = true)
+public class Image extends BaseElement {
     private String url;
 
     public Image(String url) {
@@ -9,6 +18,6 @@ public class Image implements Element {
 
     @Override
     public void print() {
-        System.out.println("Image with name:" + url);
+        System.out.println("Image with name: " + url);
     }
 }
