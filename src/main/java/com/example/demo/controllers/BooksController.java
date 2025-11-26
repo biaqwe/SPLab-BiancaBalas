@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.bookmodel.Book;
+import com.example.demo.observer.AllBooksSubject;
 import com.example.demo.persistence.BooksRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public class BooksController {
 
     private final BooksRepository booksRepository;
+    private final AllBooksSubject allBooksSubject;
 
     @GetMapping
     public List<Book> getAllBooks() {
@@ -28,9 +31,12 @@ public class BooksController {
     }
 
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        // [cite: 75] Save the book to the database
-        return booksRepository.save(book);
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        Book savedBook = booksRepository.save(book);
+
+        allBooksSubject.add(savedBook);
+
+        return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

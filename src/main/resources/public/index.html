@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Spring SSE Observer Demo</title>
+</head>
+<body>
+<h1>All Books</h1>
+<a href="javascript:void(0)" onclick="sendRequest()">Fetch Books (Start SSE Connection)</a>
+
+<h2>Received Book Events:</h2>
+<div id="sseDiv"></div>
+
+<script>
+    function sendRequest() {
+        if (typeof(EventSource) !== "undefined") {
+            const source = new EventSource(`http://localhost:8080/books-sse`);
+
+            document.getElementById("sseDiv").innerHTML += "--- SSE Connection Attempted ---<br>";
+
+            source.onopen = function(event) {
+                document.getElementById("sseDiv").innerHTML += "--- SSE Connection Open ---<br>";
+            };
+
+            source.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+
+                    document.getElementById("sseDiv").innerHTML +=
+                        `New Book ID: ${data.id}, Title: ${data.title || '[No Title]'}<br>`;
+
+                } catch (e) {
+                    console.error("Failed to parse JSON:", event.data, e);
+                }
+            };
+
+            source.onerror = function(error) {
+                console.error("EventSource failed:", error);
+                source.close();
+                document.getElementById("sseDiv").innerHTML += "--- Connection Error (Closed) ---<br>";
+            };
+
+        } else {
+            document.getElementById("sseDiv").innerHTML = "Your browser does not support server-sent events.";
+        }
+    }
+</script>
+</body>
+</html>
