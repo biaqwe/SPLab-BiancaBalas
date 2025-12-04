@@ -1,13 +1,25 @@
 package com.example.proiect;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@Entity
 public class Song {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     private String title;
     private String artist;
     private String url;
 
-    public Song(String id, String title, String artist, String url) {
-        this.id = id;
+    public Song() {
+    }
+
+    public Song(String title, String artist, String url) {
         this.title = title;
         this.artist = artist;
         this.url = url;

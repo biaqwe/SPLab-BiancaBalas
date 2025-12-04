@@ -1,30 +1,33 @@
 package com.example.proiect;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/songs")
 public class SongController {
 
-    private List<Song> playlist = new ArrayList<>();
+    private final SongRepository repository;
 
-    public SongController() {
-        playlist.add(new Song("1", "Synth Wave", "SoundHelix", "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"));
-        playlist.add(new Song("2", "Electronic Vibes", "SoundHelix", "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3"));
+    @Autowired
+    public SongController(SongRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping
     public List<Song> getSongs() {
-        return playlist;
+        return repository.findAll();
     }
 
     @PostMapping
     public Song addSong(@RequestBody Song song) {
-        song.setId(UUID.randomUUID().toString());
-        playlist.add(song);
-        return song;
+        return repository.save(song);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteSong(@PathVariable String id) {
+        repository.deleteById(id);
     }
 }
